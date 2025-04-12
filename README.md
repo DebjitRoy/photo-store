@@ -1,5 +1,17 @@
 This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
 
+## My Notes
+
+- Add .env.local
+
+  ```
+  NEXT_PUBLIC_SUPABASE_URL=
+  NEXT_PUBLIC_SUPABASE_ANON_KEY=
+
+  ```
+
+- Go to supabase https://supabase.com/dashboard/project/ggbacgzwgxmqxkbwrkyp/settings/api and login using github to access the keys
+
 ## Getting Started
 
 First, run the development server:
