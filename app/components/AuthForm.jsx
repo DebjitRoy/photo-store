@@ -2,28 +2,37 @@
 
 import React, { useState } from 'react';
 import { supabase } from '../utils/supabaseClient';
+import { useRouter } from 'next/navigation';
 
-//auth/confirm?token_hash=pkce_987d52589cf1ae3d7a8324134788535dec56a08693448eab94e84f12&type=email&next=http%3a%2f%2flocalhost%3a3000
 export default function AuthForm() {
   const [isNewUser, setIsNewUser] = useState(false);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [isSigningIn, setisSigningIn] = useState(false);
+  const [isSigningIn, setIsSigningIn] = useState(false);
   const [isSigningUp, setIsSigningUp] = useState(false);
+  const router = useRouter();
+
   const handleSignUp = async (e) => {
     e.preventDefault();
     const { data, error } = await supabase.auth.signUp({
       email,
       password,
     });
-    console.log({ data, error });
     if (!error) {
       setIsSigningUp(true);
     }
   };
   const handleSignIn = async (e) => {
     e.preventDefault();
-    // setIsSigningIn(true);
+    setIsSigningIn(true);
+    const { data, error } = await supabase.auth.signInWithPassword({
+      email,
+      password,
+    });
+    if (!error) {
+      router.push('/photos');
+    }
+    setIsSigningIn(false);
   };
   let signInMessage = 'Sign In';
   if (isNewUser) {

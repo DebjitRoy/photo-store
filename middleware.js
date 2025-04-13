@@ -2,7 +2,6 @@ import { NextResponse } from 'next/server';
 import { createServerClient } from '@supabase/ssr';
 
 export async function middleware(req) {
-  console.log('inside mw');
   const res = NextResponse.next();
 
   const supabase = createServerClient(
@@ -54,8 +53,6 @@ export async function middleware(req) {
   const {
     data: { user },
   } = await supabase.auth.getUser();
-
-  console.log('MW:', { user, path: req.nextUrl });
 
   if (user && req.nextUrl.pathname === '/') {
     return NextResponse.redirect(new URL('/photos', req.url));

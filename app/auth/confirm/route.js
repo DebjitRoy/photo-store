@@ -2,6 +2,11 @@ import { createServerClient } from '@supabase/ssr';
 import { cookies } from 'next/headers';
 import { NextResponse } from 'next/server';
 
+/**
+ * 
+  Supabase Auth email signin link update to:
+  <p><a href="{{ .SiteURL }}/auth/confirm?token_hash={{.TokenHash}}&type=email&next={{.SiteURL}}">Confirm your mail</a></p>
+ */
 export async function GET(request) {
   const { searchParams } = new URL(request.url);
   const token_hash = searchParams.get('token_hash');

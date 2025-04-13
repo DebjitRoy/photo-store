@@ -13,6 +13,23 @@ This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-
 
   ```
 
+  - supabase stotage policies
+
+        - ### // SELECT
+
+          `((bucket_id = 'photos'::text) AND (auth.uid() IS NOT NULL) AND (name ~~ (('user_uploads/'::text || auth.uid()) || '/%'::text)))`
+
+    → The ~~ is the PostgreSQL operator for pattern matching (similar to LIKE in SQL).
+    It checks if the file name (full path in the bucket) starts with: `user_uploads/<current-user-id>/`
+
+    - ### // INSERT (same as select)
+
+      `((bucket_id = 'photos'::text) AND (auth.uid() IS NOT NULL) AND (name ~~ (('user_uploads/'::text || auth.uid()) || '/%'::text)))`
+
+    - ### // DELETE
+      → This policy allows authenticated users to delete files from the photos bucket, but only if the file is in their personal folder (i.e., under user_uploads/<user_id>/...), including subfolders(one folder deep).
+      `((bucket_id = 'photos'::text) AND ((name ~~ (('user_uploads/'::text || auth.uid()) || '/%'::text)) OR (name ~~ (('user_uploads/'::text || auth.uid()) || '/%/%'::text))))`
+
 - Go to supabase https://supabase.com/dashboard/project/ggbacgzwgxmqxkbwrkyp/settings/api and login using github to access the keys
 
 ## Getting Started
