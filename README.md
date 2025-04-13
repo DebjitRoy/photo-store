@@ -17,7 +17,7 @@ This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-
 
         - ### // SELECT
 
-          `((bucket_id = 'photos'::text) AND (auth.uid() IS NOT NULL) AND (name ~~ (('user_uploads/'::text || auth.uid()) || '/%'::text)))`
+          ```((bucket_id = 'photos'::text) AND (auth.uid() IS NOT NULL) AND (name ~~ (('user_uploads/'::text || auth.uid()) || '/%'::text)))```
 
     → The ~~ is the PostgreSQL operator for pattern matching (similar to LIKE in SQL).
     It checks if the file name (full path in the bucket) starts with: `user_uploads/<current-user-id>/`

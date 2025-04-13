@@ -1,6 +1,7 @@
 import React from 'react';
 import SignOutButton from '@/app/components/SignOutButton';
 import PhotoUploader from '@/app/components/PhotoUploader';
+import PhotoGrid from '@/app/components/PhotoGrid';
 
 function Photos() {
   return (
@@ -11,7 +12,7 @@ function Photos() {
           <h1 className="text-4xl font-bold mb-4">Photos</h1>
           <PhotoUploader />
         </div>
-        {/* PhotoGrid */}
+        <PhotoGrid />
       </div>
       <div className="absolute top-4 right-4">
         <SignOutButton />
