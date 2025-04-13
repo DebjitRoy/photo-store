@@ -1,7 +1,9 @@
 'use client';
 
 import React, { useState } from 'react';
+import { supabase } from '../utils/supabaseClient';
 
+//auth/confirm?token_hash=pkce_987d52589cf1ae3d7a8324134788535dec56a08693448eab94e84f12&type=email&next=http%3a%2f%2flocalhost%3a3000
 export default function AuthForm() {
   const [isNewUser, setIsNewUser] = useState(false);
   const [email, setEmail] = useState('');
@@ -10,7 +12,14 @@ export default function AuthForm() {
   const [isSigningUp, setIsSigningUp] = useState(false);
   const handleSignUp = async (e) => {
     e.preventDefault();
-    setIsSigningUp(true);
+    const { data, error } = await supabase.auth.signUp({
+      email,
+      password,
+    });
+    console.log({ data, error });
+    if (!error) {
+      setIsSigningUp(true);
+    }
   };
   const handleSignIn = async (e) => {
     e.preventDefault();

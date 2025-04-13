@@ -2,7 +2,10 @@ This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-
 
 ## My Notes
 
+- Reference - https://www.youtube.com/watch?v=21gOL_PIfAA&t=2467s
+- https://github.com/coderyansolomon/photo-store/blob/main
 - Add .env.local
+- Readup: https://supabase.com/docs/guides/auth/server-side/nextjs
 
   ```
   NEXT_PUBLIC_SUPABASE_URL=
