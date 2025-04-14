@@ -2,9 +2,11 @@
 
 import React, { useState } from 'react';
 import { supabase } from '../utils/supabaseClient';
+import { useRouter } from 'next/navigation';
 
 export default function PhotoUploader() {
   const [uploading, setUploading] = useState(false);
+  const router = useRouter();
   const handleFileUpload = async (event) => {
     try {
       setUploading(true);
@@ -23,7 +25,17 @@ export default function PhotoUploader() {
       if (error) {
         throw error(error);
       }
-      // TODO: Update UI with new photo
+
+      // revalidate nextjs cache
+      // We can use this endpoint for any routes that needs revalidate cache
+      await fetch('/api/revalidate', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ path: '/photos' }),
+      });
+      router.refresh();
     } catch (e) {
       console.log('err upload', e);
     } finally {
