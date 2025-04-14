@@ -7,6 +7,12 @@ import { useRouter } from 'next/navigation';
 export default function PhotoUploader() {
   const [uploading, setUploading] = useState(false);
   const router = useRouter();
+  // this could be a server action?
+  /*
+  The handleFileUpload function could be refactored into a server action to handle file uploads securely on the server side, 
+  and you can use revalidatePath (introduced in Next.js 13) to refresh the /photos page instead of creating a separate 
+  /api/revalidate endpoint.
+  */
   const handleFileUpload = async (event) => {
     try {
       setUploading(true);
