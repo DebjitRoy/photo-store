@@ -27,17 +27,42 @@ const getPhotoUrls = async (photos, user) => {
     })
   );
 };
-export default async function PhotoGrid() {
+
+async function fetchFavouritePhotos(user) {
+  const { data, error } = await supabaseServer
+    .from('favourites')
+    .select('photo_name')
+    .eq('user_id', user.id);
+
+  if (error) {
+    console.log('error fetching favourites', error);
+    return [];
+  }
+  return data.map((favourite) => favourite.photo_name);
+}
+export default async function PhotoGrid({ favourites = false }) {
   const {
     data: { user },
   } = await supabaseServer.auth.getUser();
   const photos = await fetchUserPhotos(user);
 
   const photoObjs = await getPhotoUrls(photos, user);
+  const favouritePhotoNames = (await fetchFavouritePhotos(user)) || [];
 
+  const photosWithFavourites = photoObjs.map((photoObj) => {
+    return {
+      ...photoObj,
+      isFavourited: favouritePhotoNames.includes(photoObj.photoName),
+    };
+  });
+
+  const displayedPhotos = favourites
+    ? photosWithFavourites.filter((photo) => photo.isFavourited)
+    : photosWithFavourites;
+  console.log({ favourites, displayedPhotos });
   return (
     <div className="flex flex-wrap justify-center gap-4">
-      {photoObjs.map((photo) => (
+      {displayedPhotos.map((photo) => (
         <Photo
           key={photo.photoName}
           src={photo.url}
@@ -45,6 +70,7 @@ export default async function PhotoGrid() {
           width={'200px'}
           height={'200px'}
           photoName={photo.photoName}
+          isFavourited={photo.isFavourited}
         />
       ))}
     </div>

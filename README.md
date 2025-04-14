@@ -30,6 +30,16 @@ This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-
       → This policy allows authenticated users to delete files from the photos bucket, but only if the file is in their personal folder (i.e., under user_uploads/<user_id>/...), including subfolders(one folder deep).
       `((bucket_id = 'photos'::text) AND ((name ~~ (('user_uploads/'::text || auth.uid()) || '/%'::text)) OR (name ~~ (('user_uploads/'::text || auth.uid()) || '/%/%'::text))))`
 
+  - supabase db policies for favourites table
+  - Create favourites table (id, user_id references auth.users.id, photo name)
+  - Add policies for insert/select/delete to the table by only current users matching the user_id in favourites table, so, some users can't delete/see other's favourites
+
+    - `create policy insert_favourites on favourites for insert with check (auth.uid() = user_id);`
+
+    - `create policy select_favourites on favourites for select using (auth.uid() = user_id)`
+
+    - `create policy delete_favourites on favourites for delete using (auth.uid() = user_id)`
+
 - Go to supabase https://supabase.com/dashboard/project/ggbacgzwgxmqxkbwrkyp/settings/api and login using github to access the keys
 
 ## Getting Started
